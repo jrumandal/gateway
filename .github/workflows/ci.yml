@@ -13,50 +13,51 @@ jobs:
     steps:
       - name: Checkout gateway
         uses: actions/checkout@v4
+        with:
+          repository: jrumandal/gateway
+          path: gateway
 
       - name: Checkout server-shared (sibling workspace)
         uses: actions/checkout@v4
         with:
           repository: jrumandal/server-shared
-          path: ../server-shared
+          path: server-shared
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 11.24.0
-          runInstall: false
+          run_install: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
-      - name: Link server-shared into a workspace
+      - name: Link sibling into a workspace
         run: |
-          cd ..
-          printf 'packages:\n  - server-shared\n  - gateway\n' > pnpm-workspace.yaml
-          printf '{"name":"mf-ci","private":true,"packageManager":"pnpm@11.24.0","pnpm":{"onlyBuiltDependencies":["@prisma/client","@prisma/engines","prisma","@nestjs/core"]}}\n' > package.json
-          cd gateway
+          printf 'packages:\n  - "gateway"\n  - "server-shared"\n' > pnpm-workspace.yaml
+          printf '{\n  "name": "mf-workspace",\n  "private": true\n}\n' > package.json
 
       - name: Install
         run: pnpm install
 
-      - name: Build server-shared (Prisma generate + tsc)
-        run: |
-          cd ../server-shared
-          pnpm prisma:generate
-          pnpm build
-          cd ../gateway
+      - name: Build server-shared (prisma generate + tsc)
+        working-directory: server-shared
+        run: pnpm prisma:generate && pnpm build
 
       - name: Lint
+        working-directory: gateway
         run: pnpm lint
 
       - name: Typecheck
+        working-directory: gateway
         run: pnpm typecheck
 
       - name: Test
+        working-directory: gateway
         run: pnpm test
 
       - name: Build
+        working-directory: gateway
         run: pnpm build
