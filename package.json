@@ -1,5 +1,5 @@
 {
-  "name": "@server/api-gateway",
+  "name": "@jrumandal/gateway",
   "version": "0.0.1",
   "private": true,
   "description": "NestJS GraphQL gateway that stitches the catalog, cart, and user services.",

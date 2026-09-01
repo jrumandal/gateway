@@ -1,4 +1,4 @@
-# `@server/api-gateway` — GraphQL gateway
+# `@jrumandal/gateway` — GraphQL gateway
 
 The **api-gateway** is the single GraphQL entry point for the whole platform.
 It stitches the three domain services — **catalog-svc**, **cart-svc**, and
@@ -7,7 +7,7 @@ It stitches the three domain services — **catalog-svc**, **cart-svc**, and
 **Apollo Server 4** instance on a stitched schema, and also publishes an
 **OpenAPI** schema at `/api-docs` and an aggregate `/health` endpoint.
 
-> **Package name is `@server/api-gateway`** — see `package.json`.
+> **Package name is `@jrumandal/gateway`** — see `package.json`.
 > **Status:** Faithful port of the reference `apps/api-gateway`, re-homed as a
 > standalone, independently versioned repository.
 
@@ -165,7 +165,7 @@ gateway/
 ├── .env.example               # PORT, GATEWAY_SERVICES, …
 ├── eslint.config.mjs          # flat ESLint 9 config
 ├── jest.config.cts            # Jest + ts-jest
-├── package.json               # @server/api-gateway (private)
+├── package.json               # @jrumandal/gateway (private)
 ├── tsconfig.json              # base compiler options
 ├── tsconfig.build.json        # build → dist/
 ├── tsconfig.spec.json         # test (Jest)
