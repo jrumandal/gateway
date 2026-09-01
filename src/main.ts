@@ -7,7 +7,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { json } from 'express';
 import { AppModule } from './app/app.module';
 import { GatewayService } from './app/gateway/gateway.service';
-import { AllExceptionsFilter, LoggingInterceptor } from '@server/shared';
+import { AllExceptionsFilter, LoggingInterceptor } from '@jrumandal/shared';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

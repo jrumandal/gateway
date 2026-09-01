@@ -127,16 +127,16 @@ verify an `Authorization: Bearer <token>` header; for the reference
 architecture it accepts all requests so the gateway can be exercised without a
 real auth provider.
 
-## Consuming `@server/shared`
+## Consuming `@jrumandal/shared`
 
 `app.module.ts` imports `AppConfigModule` and `SharedModule` from
-`@server/shared`; `main.ts` applies the global `AllExceptionsFilter` and
+`@jrumandal/shared`; `main.ts` applies the global `AllExceptionsFilter` and
 `LoggingInterceptor`. This gives the gateway, for free:
 
 - structured request logging
 - a consistent error envelope for every exception
 
-`@server/shared` is a **workspace dependency** (`workspace:*`). In this
+`@jrumandal/shared` is a **workspace dependency** (`workspace:*`). In this
 standalone repo it resolves through the pnpm workspace link to
 `server-shared/dist/index.js` (main) + `dist/index.d.ts` (types) — so
 **`server-shared` must be built (`tsc` → `dist/`) before this repo is
@@ -202,4 +202,4 @@ The gateway declares (in `package.json`):
 - `@graphql-tools/executor-http` — `buildHTTPExecutor` for HTTP delegation.
 - `graphql` — `buildClientSchema` / `getIntrospectionQuery` for introspection.
 - `@nestjs/*` — the NestJS runtime (common, core, config, platform-express, swagger).
-- `@server/shared` — shared config / logging / error filter (workspace dep).
+- `@jrumandal/shared` — shared config / logging / error filter (workspace dep).
