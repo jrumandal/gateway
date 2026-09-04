@@ -203,3 +203,13 @@ The gateway declares (in `package.json`):
 - `graphql` — `buildClientSchema` / `getIntrospectionQuery` for introspection.
 - `@nestjs/*` — the NestJS runtime (common, core, config, platform-express, swagger).
 - `@jrumandal/shared` — shared config / logging / error filter (workspace dep).
+
+## Docker deployment
+
+The gateway ships as a **multi-stage** image (`mf/gateway:latest`, ~750 MB, down from ~2.83 GB single-stage). Dependencies are installed **at build time**; only the compiled `dist/` output plus a production `node_modules` (via `pnpm deploy --legacy -P`) is shipped to the runtime stage.
+
+- **Build stage** — `node:22-slim` + pnpm: `pnpm install` (workspace), `cd server-shared && pnpm prisma:generate`, then `tsc` build.
+- **Runtime stage** — `node:22-slim`; copies the `pnpm deploy` target (prod deps only) and the generated Prisma client, then runs `node dist/main.js` (GraphQL on `PORT`, default 4200 in compose).
+- **Build command** — `docker build -f Dockerfile.gateway -t mf/gateway:latest .` (from the compose context), then `docker compose up -d`.
+
+> The same multi-stage pattern applies to the other three backends (`catalog-svc`, `cart-svc`, `user-svc`). See `mf-orchestrator/README.md` → *Docker deployment* for the full service table, image sizes, and gotchas (Prisma client stub vs. real, layer caching).
